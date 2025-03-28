@@ -1,0 +1,31 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main           # или ветка, в которую вы хотите пушить
+  pull_request:
+    branches:
+      - main           # или ветка для PR
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest  # используем последнюю версию Ubuntu
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2  # Клонируем репозиторий
+
+    - name: Set up Python
+      uses: actions/setup-python@v2  # Настройка Python
+      with:
+        python-version: '3.8'  # Укажите необходимую версию Python
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install ruff  # Устанавливаем линтер ruff
+
+    - name: Run ruff linter
+      run: |
+        ruff check .  # Проверка кода с помощью линтера
